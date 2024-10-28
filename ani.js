@@ -43,7 +43,7 @@ gsap.to(".selector4", { // selector text, Array, or object
 });
 
 
-const images = document.querySelectorAll(".image"); // Selects all elements with class "image"
+const images = document.querySelectorAll(".image");
 
 images.forEach((image) => {
   image.addEventListener("mouseenter", () => {
@@ -56,6 +56,31 @@ images.forEach((image) => {
   image.addEventListener("mouseleave", () => {
     gsap.to(image, {
       scale: 1,
+      duration: 0.3,
+    });
+  });
+
+  image.addEventListener('mousemove', (event) => {
+    const { offsetX, offsetY } = event;
+    const { width, height } = image.getBoundingClientRect();
+
+    const xPos = (offsetX / width) * -75 - 10;
+    const yPos = (offsetY / height) * -75 - 10;
+
+    // Apply transform to subtly follow the mouse
+    gsap.to(image, {
+      x: xPos,
+      y: yPos,
+      duration: 0.1,
+      overwrite: true,
+    });
+  });
+
+  image.addEventListener('mouseleave', () => {
+    // Reset image position when mouse leaves
+    gsap.to(image, {
+      x: 0,
+      y: 0,
       duration: 0.3,
     });
   });
